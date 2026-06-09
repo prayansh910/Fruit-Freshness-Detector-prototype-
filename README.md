@@ -2,77 +2,84 @@
 
 ## 📌 Overview
 
-Fruit Freshness Detector is a prototype computer vision project that analyzes fruit images and estimates their freshness using image variance analysis.
+Fruit Freshness Detector is a prototype computer vision project that estimates the freshness of fruit images using image variance analysis.
 
-The system first classifies an uploaded image into a food category using a pre-trained Zero-Shot Image Classification model from Hugging Face. If the detected category is a fruit, the image is further analyzed to estimate freshness based on variance extracted from pixel values.
+The system first identifies whether the uploaded image belongs to the fruit category using a Zero-Shot Image Classification model from Hugging Face. Once a fruit is detected, the image is analyzed using statistical image features to estimate its freshness level.
 
-This project was developed as a learning-focused prototype to explore image classification, feature extraction, and rule-based decision-making in computer vision.
+The project was developed as a learning-focused AI and Computer Vision prototype to explore image classification, feature extraction, and rule-based decision making.
 
 ---
 
 ## 🎯 Project Objective
 
-The goal of this project is to:
+The primary objectives of this project are:
 
-* Detect whether an uploaded image belongs to a fruit category.
-* Extract visual features from the image.
-* Estimate fruit freshness using image variance.
-* Generate a simple freshness report.
-
-This project is intended as a prototype and proof-of-concept rather than a production-ready freshness detection system.
+- Detect whether an uploaded image contains a fruit.
+- Extract visual features from the image.
+- Estimate fruit freshness using image variance.
+- Generate a simple freshness report.
+- Explore the practical application of computer vision techniques.
 
 ---
 
-## ⚙️ Technologies Used
+## 🛠 Technologies Used
 
-* Python
-* Google Colab
-* Hugging Face Transformers
-* Zero-Shot Image Classification
-* NumPy
-* Pillow (PIL)
+- Python
+- Google Colab
+- Hugging Face Transformers
+- Zero-Shot Image Classification
+- NumPy
+- Pillow (PIL)
 
 ---
 
 ## 🔄 Project Workflow
 
+```text
 Image Upload
-
-⬇
-
-Food Category Classification
-
-⬇
-
-Fruit Verification
-
-⬇
-
-Image Variance Calculation
-
-⬇
-
+      ↓
+Fruit Classification
+      ↓
+Variance Calculation
+      ↓
 Freshness Estimation
+      ↓
+Freshness Report
+```
 
-⬇
+---
 
-Fruit Freshness Report
+## 📸 Sample Outputs
+
+### Fresh Apple Detection
+
+![Fresh Apple](images/fresh_apple.png)
+
+### Rotten Apple Detection
+
+![Rotten Apple](images/rotten_apple.png)
+
+### Fresh Banana Detection
+
+![Fresh Banana](images/fresh_banana.png)
 
 ---
 
 ## 🧠 Methodology
 
-### 1. Category Detection
+### 1. Fruit Classification
 
-The uploaded image is passed through a Zero-Shot Image Classification model with the following candidate labels:
+The uploaded image is passed through a Hugging Face Zero-Shot Image Classification model.
 
-* Fruit
-* Vegetable
-* Baked
-* Meat
-* Dairy
+Candidate labels:
 
-Only fruit images proceed to freshness analysis.
+- Fruit
+- Vegetable
+- Baked
+- Meat
+- Dairy
+
+Only images classified as **Fruit** proceed to freshness analysis.
 
 ---
 
@@ -80,59 +87,69 @@ Only fruit images proceed to freshness analysis.
 
 The image is converted into a NumPy array and normalized.
 
-Variance is then calculated from the pixel values:
+Variance is calculated from the pixel values:
 
-* Low variance generally indicates smoother and more uniform fruit surfaces.
-* High variance may indicate discoloration, dark spots, or irregular texture.
+```python
+variance = np.var(img_array)
+```
 
----
-
-### 3. Freshness Classification
-
-The freshness decision is made using variance thresholds:
-
-| Variance Range    | Freshness Status |
-| ----------------- | ---------------- |
-| Less than 0.04    | Fresh            |
-| 0.04 – 0.08       | Okay             |
-| Greater than 0.08 | Avoid            |
+Variance measures the spread of pixel intensities within an image.
 
 ---
 
-## 📊 Sample Test Results
+### 3. Freshness Estimation
 
-| Fruit         | Variance | Predicted Freshness |
-| ------------- | -------- | ------------------- |
-| Fresh Apple   | 0.033    | Fresh               |
-| Rotten Apple  | 0.102    | Avoid               |
-| Fresh Banana  | 0.029    | Fresh               |
-| Rotten Banana | 0.080    | Avoid               |
-| Fresh Orange  | 0.069    | Okay                |
-| Rotten Orange | 0.102    | Avoid               |
-| Fresh Grapes  | 0.070    | Okay                |
-| Fresh Pear    | 0.053    | Okay                |
-| Rotten Pear   | 0.072    | Okay                |
+Freshness is determined using predefined variance thresholds.
+
+| Variance Range | Freshness |
+|---------------|------------|
+| Less than 0.04 | Fresh |
+| 0.04 - 0.08 | Okay |
+| Greater than 0.08 | Avoid |
 
 ---
 
-## 📈 Observations
+## 📊 Test Results
 
-Testing revealed that variance can successfully separate some fresh and rotten fruits, particularly apples and bananas.
+| Fruit | Condition | Variance | Prediction |
+|---------|---------|---------|---------|
+| Apple | Fresh | 0.033 | Fresh |
+| Apple | Rotten | 0.102 | Avoid |
+| Banana | Fresh | 0.029 | Fresh |
+| Banana | Rotten | 0.081 | Avoid |
+| Orange | Fresh | 0.069 | Okay |
+| Orange | Rotten | 0.102 | Avoid |
+| Grapes | Fresh | 0.070 | Okay |
+| Pear | Fresh | 0.053 | Okay |
+| Pear | Rotten | 0.072 | Okay |
 
-However, fruits with naturally textured surfaces such as grapes, oranges, and pears produce higher variance values even when fresh.
+---
 
-This demonstrates both the usefulness and limitations of variance-based freshness estimation.
+## 📈 Key Observations
+
+During testing, the system performed well for:
+
+- Apples
+- Bananas
+
+The system showed mixed results for:
+
+- Pears
+- Grapes
+- Oranges
+
+This demonstrates that image variance can be useful for freshness estimation but is not sufficient as a standalone feature for all fruit types.
 
 ---
 
 ## ⚠️ Limitations
 
-* Prototype-level implementation.
-* Works only for fruit images.
-* Freshness estimation relies on variance alone.
-* Performance varies across different fruit types.
-* Lighting conditions and image quality can affect results.
-* Not suitable for commercial or real-world deployment.
+- Prototype-level implementation.
+- Supports fruit freshness estimation only.
+- Relies solely on image variance.
+- Performance depends on image quality and lighting conditions.
+- Different fruit textures affect variance values.
+- Not intended for commercial deployment.
 
 ---
 
@@ -140,33 +157,43 @@ This demonstrates both the usefulness and limitations of variance-based freshnes
 
 Potential future enhancements include:
 
-* Training a CNN-based Fresh vs Rotten classifier.
-* Using a dedicated fruit freshness dataset.
-* Supporting vegetables and other food categories.
-* Building a web application interface.
-* Deploying the model using Streamlit or Flask.
-* Combining multiple visual features instead of relying solely on variance.
+- Training a CNN-based Fresh vs Rotten classifier.
+- Using a dedicated fruit freshness dataset.
+- Adding support for vegetables.
+- Combining multiple image features instead of variance alone.
+- Building a Streamlit web application.
+- Deploying the project on the cloud.
 
 ---
 
 ## 📚 Learning Outcomes
 
-Through this project, the following concepts were explored:
+This project helped in understanding:
 
-* Computer Vision Fundamentals
-* Image Classification
-* Feature Extraction
-* NumPy Image Processing
-* Hugging Face Transformers
-* Rule-Based Decision Systems
-* Model Evaluation and Testing
+- Computer Vision Fundamentals
+- Image Classification
+- Feature Extraction
+- NumPy Image Processing
+- Hugging Face Transformers
+- Rule-Based Classification Systems
+- Model Evaluation and Testing
+
+---
+
+## 💡 Conclusion
+
+This project successfully demonstrates a prototype approach for fruit freshness estimation using image classification and variance-based analysis.
+
+Although the model has limitations, it serves as a strong proof-of-concept and provides valuable insights into computer vision workflows, image processing, and AI-based decision making.
 
 ---
 
 ## 👨‍💻 Author
 
-Prayansh Gupta
+**Prayansh**
 
 B.Tech – Artificial Intelligence & Data Science
 
-Prototype project developed for learning and experimentation in Computer Vision and AI.
+Galgotias College of Engineering & Technology
+
+Prototype project developed for learning and experimentation in Computer Vision and Artificial Intelligence.
