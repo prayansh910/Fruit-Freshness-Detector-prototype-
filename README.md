@@ -193,6 +193,7 @@ Although the model has limitations, it serves as a strong proof-of-concept and p
 **Prayansh Gupta**
 
 B.Tech – Artificial Intelligence & Data Science
+
 Galgotias College of Engineering & Technology (2023-27)
 
 Prototype project developed for learning and experimentation in Computer Vision and Artificial Intelligence.
